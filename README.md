@@ -6,6 +6,12 @@ ufw status
 ```
 ##
 
+⚠️ IMPORTANT ! Autoriser le ssh pour éviter de bloquer la connexion à la VM : 
+```
+ufw allow ssh
+```
+##
+
 Activer ufw :
 ```
 ufw enable
@@ -43,6 +49,11 @@ nano /etc/ufw/before.rules
 -A PREROUTING -p tcp --dport 25565 -j DNAT --to-destination 80.80.80.80:25565
 -A PREROUTING -p udp --dport 25565 -j DNAT --to-destination 80.80.80.80:25565
 -A POSTROUTING -d 80.80.80.80 -j MASQUERADE
+
+-A PREROUTING -p tcp --dport 34197 -j DNAT --to-destination 80.80.80.80:34197
+-A PREROUTING -p udp --dport 34197 -j DNAT --to-destination 80.80.80.80:34197
+-A POSTROUTING -d 80.80.80.80 -j MASQUERADE
+
 
 COMMIT
 ```
