@@ -1,5 +1,11 @@
 # ufw ip forwarding (Reverse Proxy)
 
+Mettre à jour le système.
+
+```bash
+sudo apt-get update && apt-get upgrade
+```
+
 Vérifier l'état d'ufw :
 ```
 ufw status
