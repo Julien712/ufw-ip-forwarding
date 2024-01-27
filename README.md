@@ -63,8 +63,8 @@ nano /etc/ufw/before.rules
 
 # Ajoutez cette règle pour rediriger le trafic UDP et TCP sur une plage de ports
 
--A PREROUTING -p tcp --dport 1000:65000 -j DNAT --to-destination 80.80.80.80:1000-65000
--A PREROUTING -p udp --dport 1000:65000 -j DNAT --to-destination 80.80.80.80:1000-65000
+-A PREROUTING -p tcp --dport 2000-49000 -j DNAT --to-destination 80.80.80.80:2000-49000
+-A PREROUTING -p udp --dport 2000-49000 -j DNAT --to-destination 80.80.80.80:2000-49000
 -A POSTROUTING -d 80.80.80.80 -j MASQUERADE
 
 # DÉCONSEILLÉ Ajoutez cette règle pour rediriger TOUT le trafic UDP et TCP
