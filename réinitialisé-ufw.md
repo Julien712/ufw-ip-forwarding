@@ -18,7 +18,7 @@ sudo ufw reset
 
 ##
 
-⚠️**IMPORTANT ! Ne pas oublié de réautoriser le ssh pour éviter de bloquer la connexion à la VM : **
+**⚠️ IMPORTANT ! Ne pas oublié de réautoriser le ssh pour éviter de bloquer la connexion à la VM :**
 
 ```bash
 ufw allow ssh
