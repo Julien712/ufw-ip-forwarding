@@ -18,6 +18,8 @@ sudo iptables -P OUTPUT ACCEPT
 
 Ces commandes supprimeront toutes les règles existantes dans les tables filter, nat et mangle, ainsi que les chaînes personnalisées. Elles définissent également les politiques par défaut sur ACCEPT.
 
+##
+
 **Réinitialiser les compteurs de paquets et de bytes :**
 
 ```bash
@@ -25,6 +27,8 @@ sudo iptables -Z
 ```
 
 Cette commande réinitialise les compteurs de paquets et de bytes des règles d'Iptables.
+
+##
 
 **Réinitialiser les règles persistantes (si vous utilisez un système qui les sauvegarde, comme iptables-save/iptables-restore) :**
 
