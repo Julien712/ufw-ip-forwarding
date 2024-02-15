@@ -59,7 +59,7 @@ sudo openvpn /etc/openvpn/client.conf
  curl ifconfig.me
 ```
 
-## Configurer ufw sur le serveur openvpn
+## Configurer ufw sur le serveur et le client
 
 **Vérifier l'état d'ufw :**
 ```bash
@@ -98,6 +98,8 @@ nano /etc/ufw/sysctl.conf
 nano /etc/ufw/before.rules
 ```
 
+**Pour le Serveur :**
+
 ```bash
 *nat
 :PREROUTING ACCEPT [0:0]
@@ -109,6 +111,23 @@ nano /etc/ufw/before.rules
 
 -A PREROUTING -i ens3 -p tcp --dport 2000:49000 -j DNAT --to-destination 10.8.0.2
 -A PREROUTING -i ens3 -p udp --dport 2000:49000 -j DNAT --to-destination 10.8.0.2
+
+COMMIT
+```
+
+**Pour le Client :**
+
+```bash
+*nat
+:PREROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+
+# Remplacer tun0 par l'interface réseau d'openvpn (Visible avec la commande : ifconfig)
+# Remplacer 192.168.0.31 par l'ip local du conteneur LXC
+# Remplacer 2000:49000 par le ou les ports désirés
+
+-A PREROUTING -i tun0 -p tcp --dport 2000:49000 -j DNAT --to-destination 192.168.0.31
+-A PREROUTING -i tun0 -p udp --dport 2000:49000 -j DNAT --to-destination 192.168.0.31
 
 COMMIT
 ```
