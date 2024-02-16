@@ -1,6 +1,6 @@
 # Openvpn (Reverse Proxy)
 
-**Mettre à jour le système**
+**Mettre à jour le système :**
 
 ```bash
 sudo apt-get update && apt-get upgrade
@@ -10,15 +10,15 @@ sudo apt-get update && apt-get upgrade
 **Suivre ce tuto :**
 https://www.youtube.com/watch?v=wnHslYZCiTE
 
-**Lien vers le github du script d'installation openvpn:**
+**Lien vers le github du script d'installation openvpn :**
 https://github.com/angristan/openvpn-install
 
-**Surveiller à la fin du script ou est stocker le fichier de configuration pour le client**
+**Surveiller à la fin du script où est stocké le fichier de configuration pour le client**
 - Pour ma part c'est : `/home/ubuntu/client.ovpn`
 
-## Installer openvpn sur le client (Un conteneur LXC Proxmox) 
+## Installer openvpn sur le client (Conteneur LXC Proxmox) 
 
-**Pour utilisé openvpn dans les conteneur il faut modifier le fichier de configuration pour ajouter le périphérique /dev/net/tun en suivant la doc :**
+**Pour utiliser openvpn dans les conteneurs LXC il faut modifier le fichier de configuration pour ajouter le périphérique /dev/net/tun en suivant la doc :**
 
 https://pve.proxmox.com/wiki/OpenVPN_in_LXC
 
@@ -59,7 +59,7 @@ sudo openvpn /etc/openvpn/client.conf
  curl ifconfig.me
 ```
 
-## Configurer ufw sur le serveur et le client
+## Configurer ufw sur le serveur
 
 **Vérifier l'état d'ufw :**
 ```bash
@@ -98,8 +98,6 @@ nano /etc/ufw/sysctl.conf
 nano /etc/ufw/before.rules
 ```
 
-**Pour le Serveur :**
-
 ```bash
 *nat
 :PREROUTING ACCEPT [0:0]
@@ -115,25 +113,13 @@ nano /etc/ufw/before.rules
 COMMIT
 ```
 
-**Pour le Client :**
-
-```bash
-*nat
-:PREROUTING ACCEPT [0:0]
-:POSTROUTING ACCEPT [0:0]
-
-# Remplacer tun0 par l'interface réseau d'openvpn (Visible avec la commande : ifconfig)
-# Remplacer 192.168.0.31 par l'ip local du conteneur LXC
-# Remplacer 2000:49000 par le ou les ports désirés
-
--A PREROUTING -i tun0 -p tcp --dport 2000:49000 -j DNAT --to-destination 192.168.0.31
--A PREROUTING -i tun0 -p udp --dport 2000:49000 -j DNAT --to-destination 192.168.0.31
-
-COMMIT
-```
-
 **Recharger ufw pour appliquer les changements :**
 
 ```bash
 ufw reload
 ```
+
+## Conseils concernant la configuration sur Pterodactyl :
+
+Dans "allocations" sur le serveur ou est le client openvpn il faut soit renseigné : `10.8.0.2` pour autorisé le tafic Openvpn ou `0.0.0.0` pour tout le trafic local sur le conteneur LXC
+
