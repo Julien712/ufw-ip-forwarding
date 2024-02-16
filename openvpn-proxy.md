@@ -121,5 +121,11 @@ ufw reload
 
 ## Conseils concernant la configuration sur Pterodactyl :
 
-Dans "allocations" sur le serveur ou est le client openvpn il faut soit renseigné : `10.8.0.2` pour autorisé le tafic Openvpn ou `0.0.0.0` pour tout le trafic local sur le conteneur LXC
+Dans "allocations" sur le serveur où est le client Openvpn il faut soit renseigné : 
+
+`10.8.0.2` pour autoriser le trafic Openvpn 
+
+ou 
+
+`0.0.0.0` pour tout le trafic local sur le conteneur LXC
 
