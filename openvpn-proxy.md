@@ -118,6 +118,10 @@ COMMIT
 ```bash
 ufw reload
 ```
+**Si ça ne fonctionne pas :**
+```bash
+reboot
+```
 
 ## Conseils concernant la configuration sur Pterodactyl :
 
