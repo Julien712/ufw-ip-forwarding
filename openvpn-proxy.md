@@ -1,28 +1,30 @@
-# Openvpn (Reverse Proxy)
+# OpenVPN (Reverse Proxy)
 
-**Mettre à jour le système :**
+Mettre à jour le système :
 
 ```bash
 sudo apt-get update && apt-get upgrade
 ```
-## Installer openvpn sur le serveur
 
-**Suivre ce tuto :**
+## Installer OpenVPN sur le serveur
+
+Suivre ce tuto :
 https://www.youtube.com/watch?v=wnHslYZCiTE
 
-**Lien vers le github du script d'installation openvpn :**
+Lien vers le github du script d'installation OpenVPN :
 https://github.com/angristan/openvpn-install
 
 **Surveiller à la fin du script où est stocké le fichier de configuration pour le client**
+
 - Pour ma part c'est : `/home/ubuntu/client.ovpn`
 
-## Installer openvpn sur le client (Conteneur LXC Proxmox) 
+## Installer OpenVPN sur le client (Conteneur LXC Proxmox) 
 
-**Pour utiliser openvpn dans les conteneurs LXC il faut modifier le fichier de configuration pour ajouter le périphérique /dev/net/tun en suivant la doc :**
+Pour utiliser OpenVPN dans les conteneurs LXC il faut modifier le fichier de configuration pour ajouter le périphérique /dev/net/tun en suivant la doc :
 
 https://pve.proxmox.com/wiki/OpenVPN_in_LXC
 
-**Installer openvpn :**
+Installer OpenVPN :
 
 ```bash
 sudo -i
@@ -32,67 +34,74 @@ sudo -i
 apt install openvpn
 ```
 
-**Coller la configuration client généré sur le serveur dans :**
+Coller la configuration client généré sur le serveur dans :
+
 ```bash
 nano /etc/openvpn/client.conf
 ```
 
-**Vérifier si le vpn démarre et que tout fonctionne :**
+Vérifier si le vpn démarre et que tout fonctionne :
+
 ```bash
 sudo openvpn /etc/openvpn/client.conf
 ```
 
 **CTRL + C pour quitter**
 
-**Activer openvpn au démarrage :**
+Activer OpenVPN au démarrage :
+
 ```bash
  sudo systemctl enable openvpn@client.service
 ```
 
-**Démarrer le service :**
+Démarrer le service :
+
 ```bash
  sudo systemctl start openvpn@client.service
 ```
 
-**Vérifier que le client utilise bien l'ip du serveur vpn :**
+Vérifier que le client utilise bien l'ip du serveur OpenVPN :
 ```bash
  curl ifconfig.me
 ```
 
 ## Configurer ufw sur le serveur
 
-**Vérifier l'état d'ufw :**
+Vérifier l'état d'ufw :
+
 ```bash
 ufw status
 ```
 
-**⚠️ IMPORTANT ! Autoriser le ssh pour éviter de bloquer la connexion à la VM :**
+⚠️ IMPORTANT ! Autoriser le ssh pour éviter de bloquer la connexion à la VM :
+
 ```bash
 ufw allow ssh
 ```
 
-**Activer ufw :**
+Activer ufw :
+
 ```bash
 ufw enable
 ```
 
-**modifier /etc/default/ufw pour accepter les demandes de transfert :**
+modifier /etc/default/ufw pour accepter les demandes de transfert :
 
 ```bash
 nano /etc/default/ufw
 ```
+
 - default_forward_policy = "accept"
 
-
-**éditer /etc/ufw/sysctl.conf pour autoriser le transfert ip :**
+éditer /etc/ufw/sysctl.conf pour autoriser le transfert ip :
 
 ```bash
 nano /etc/ufw/sysctl.conf
 ```
+
 - net.ipv4.ip_forward=1
 
-
-**modifier /etc/ufw/before.rules puis ajouter ce qui suit au début du fichier :**
+modifier /etc/ufw/before.rules puis ajouter ce qui suit au début du fichier :
 
 ```bash
 nano /etc/ufw/before.rules
@@ -113,23 +122,24 @@ nano /etc/ufw/before.rules
 COMMIT
 ```
 
-**Recharger ufw pour appliquer les changements :**
+Recharger ufw pour appliquer les changements :
 
 ```bash
 ufw reload
 ```
-**Si ça ne fonctionne pas :**
+
+Si ça ne fonctionne pas :
+
 ```bash
 reboot
 ```
 
 ## Conseils concernant la configuration sur Pterodactyl :
 
-Dans "allocations" sur le serveur où est le client Openvpn il faut soit renseigné : 
+Dans "allocations" sur le conteneur LXC où est le client Openvpn il faut soit renseigné : 
 
-`10.8.0.2` pour autoriser le trafic Openvpn 
+`10.8.0.2` pour autoriser **UNIQUEMENT** le trafic entrant du serveur Openvpn 
 
 ou 
 
-`0.0.0.0` pour tout le trafic local sur le conteneur LXC
-
+`0.0.0.0` pour tout le trafic local sur le conteneur LXC (Box et serveur Openvpn)
